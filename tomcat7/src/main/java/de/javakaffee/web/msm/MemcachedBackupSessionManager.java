@@ -147,7 +147,11 @@ public class MemcachedBackupSessionManager extends ManagerBase implements Lifecy
 
     @Override
     public MemcachedBackupSession createSession( final String sessionId ) {
-        return _msm.createSession( sessionId );
+    	final Session _session= super.createSession(sessionId);
+//    	MemcachedBackupSession session = _msm.createSession( sessionId );
+    	MemcachedBackupSession session = _msm.createMemcachedBackupSession( _session );
+        session.setMaxInactiveInterval(((Context) getContainer()).getSessionTimeout() * 60);
+        return session;
     }
 
     @Override
