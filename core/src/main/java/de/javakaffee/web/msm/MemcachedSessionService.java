@@ -680,7 +680,8 @@ public class MemcachedSessionService {
         session.setNew( true );
         session.setValid( true );
         session.setCreationTime( System.currentTimeMillis() );
-        session.setMaxInactiveInterval( _manager.getMaxInactiveInterval() );
+//        session.setMaxInactiveInterval( _manager.getMaxInactiveInterval() );
+        session.setMaxInactiveInterval(((Context)_manager.getContainer()).getSessionTimeout() * 60);
 
         if ( sessionId == null || !_memcachedNodesManager.canHitMemcached( sessionId ) ) {
             sessionId = _manager.generateSessionId();
@@ -711,7 +712,7 @@ public class MemcachedSessionService {
             if ( _log.isDebugEnabled() ) {
                 _log.debug( "Remove session id  " + session.getId() + "  from _invalidSessionsCache, marking new session valid" );
             }
-            _invalidSessionsCache.remove(session.getId());            
+            _invalidSessionsCache.remove(session.getId());
         }
         return session;
 
